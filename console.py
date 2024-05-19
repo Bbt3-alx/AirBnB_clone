@@ -6,7 +6,8 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 
-class Console(cmd.Cmd):
+
+class HBNBCommand(cmd.Cmd):
     """A bass class that inherite from the base class Cmd"""
     prompt = '(hbnb) '
 
@@ -22,7 +23,7 @@ class Console(cmd.Cmd):
     def do_quit(self, line):
         """Exit the interpreter"""
         return True
-    
+
     def emptyline(self):
         """Do nothing on empty input line"""
         pass
@@ -118,5 +119,6 @@ class Console(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
+
 if __name__ == "__main__":
-    Console().cmdloop()
+    HBNBCommand().cmdloop()
