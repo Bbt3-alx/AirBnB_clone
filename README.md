@@ -29,10 +29,11 @@ The console is built with Python's `cmd` module and includes a storage system th
 ## Installation
 
 1. Clone The reposiory to your local machine:
-	```bash
+```bash
 	git clone https://github.com/Bbt3-alx/AirBnB_clone.git
 	cd AirBnB_clone
 ```
+
 3. Ensure you have Python 3.8+ installed on your machine.
 
 3. No additional dependencies are required.
@@ -41,11 +42,11 @@ The console is built with Python's `cmd` module and includes a storage system th
 ## Usage
 
 To start the console, run the following command from the project root directory
-	```bash
+```bash
 	python3 console.py
 ```
 
-You will be presented with the `(hbnb) ` prompt wjere you can enter commands.
+You will be presented with the `(hbnb) ` prompt where you can enter commands.
 
 
 ## Commands

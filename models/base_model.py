@@ -10,9 +10,20 @@ class BaseModel:
     """BaseModel defines all common attributes/methodes for other classes"""
     def __init__(self, *args, **kwargs):
         """Initiate the base model class"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    setattr(self, key, value)
+                    if 'created_at' in key:
+                        self.created_at = datetime.fromisoformat(value)
+                    if 'updated_at' in key:
+                        self.updated_at = datetime.fromisoformat(value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
+            from models import storage
+            storage.new(self)
 
     
     def save(self):
@@ -21,6 +32,8 @@ class BaseModel:
         with the current datetime
         """
         self.updated_at = datetime.utcnow()
+        from models import storage
+        storage.save()
 
     def to_dict(self):
         """
