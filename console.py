@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         obj_list = []
         if not line:
             obj_list = [str(obj) for obj in storage.all().values()]
-        elif args[0] in sorage.classes():
+        elif args[0] in storage.classes():
             obj_list = [str(obj) for key, obj in storage.all().items() if key.startswith(args[0])]
         else:
             print("** class doesn't exit **")
