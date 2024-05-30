@@ -1,54 +1,45 @@
 #!/usr/bin/python3
-"""The base model module"""
+"""module base_model"""
 
 
 import uuid
 from datetime import datetime
+import models
 
 
-class BaseModel:
-    """BaseModel defines all common attributes/methodes for other classes"""
+class BaseModel():
+    """This is the class BaseModel"""
     def __init__(self, *args, **kwargs):
-        """Initiate the base model class"""
+        """class constructor for class BaseModel"""
         if kwargs:
+            kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+
             for key, value in kwargs.items():
                 if key != '__class__':
                     setattr(self, key, value)
-                    if 'created_at' in key:
-                        self.created_at = datetime.fromisoformat(value)
-                    if 'updated_at' in key:
-                        self.updated_at = datetime.fromisoformat(value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = datetime.utcnow()
-            from models import storage
-            storage.new(self)
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            models.storage.new(self)
 
-    
+    def __str__(self):
+        """The string representation of the BaseModel instance"""
+        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
+
     def save(self):
-        """
-        Update the public instance attribute update_at
-        with the current datetime
-        """
-        self.updated_at = datetime.utcnow()
-        from models import storage
-        storage.save()
+        """Creates an updated version of the 'updated_at'
+        instance with the current datetime"""
+        self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
-        """
-        Return a dictionary containing all keys/values of __dic__ 
-        of the instance
-        """
-        # make a copy of the __dict__
-        dict_copy = self.__dict__.copy()
-        dict_copy['created_at'] = self.created_at.isoformat()
-        dict_copy['updated_at'] = self.updated_at.isoformat()
-        dict_copy['__class__'] = self.__class__.__name__
-
-        return dict_copy
-        
-    def __str__(self):
-        """Print the string representation of the class"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
-
+        """The dictionary representation of instance"""
+        obj_dict = dict(self.__dict__)
+        obj_dict['created_at'] = self.__dict__['created_at'].isoformat()
+        obj_dict['updated_at'] = self.__dict__['updated_at'].isoformat()
+        obj_dict['__class__'] = self.__class__.__name__
+        return (obj_dict)
